@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\user\WebCalenderAPI</_PublishTargetUrl>
+    <History>True|2024-10-13T15:33:12.2244516Z||;True|2024-10-13T22:16:30.0129533+07:00||;True|2024-10-13T09:28:43.4384277+07:00||;False|2024-10-13T08:53:26.7779453+07:00||;False|2024-10-12T21:45:37.3033679+07:00||;False|2024-10-12T21:42:19.8771509+07:00||;False|2024-10-12T21:27:30.5388049+07:00||;False|2024-10-12T21:25:14.5035097+07:00||;False|2024-10-12T21:23:57.2723531+07:00||;False|2024-10-12T21:19:10.0824652+07:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>
