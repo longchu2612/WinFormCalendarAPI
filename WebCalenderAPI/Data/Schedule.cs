@@ -15,5 +15,12 @@
         public int? ToY { get; set; }
 
         public string? Reason { get; set; }
+
+        public ICollection<Schedule_User> schedule_s { get; set; }
+
+        public Schedule()
+        {
+            schedule_s = new List<Schedule_User>();
+        }
     }
 }

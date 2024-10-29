@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebCalenderAPI.Models;
 
 namespace WebCalenderAPI.Data
 {
@@ -7,6 +8,12 @@ namespace WebCalenderAPI.Data
         public MyDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<User> Uses { get; set; }
+        public DbSet<Schedule_User> schedule_Users {  get; set; }
+        
+        public DbSet<RefreshToken> refreshTokens { get; set; } 
+
+        public DbSet<UserToken> userTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,7 +27,29 @@ namespace WebCalenderAPI.Data
                 e.Property(sche => sche.ToX);
                 e.Property(sche => sche.ToY);
                 e.Property(sche => sche.Reason);
+
             });
+
+            modelBuilder.Entity<User>(u =>
+            {
+                u.ToTable("User");
+                u.HasKey(u => u.Id);
+                u.Property(u => u.Id).ValueGeneratedOnAdd();
+                u.Property(u => u.UserName);
+                u.HasIndex(u => u.UserName).IsUnique();
+                u.Property(u => u.Password).IsRequired().HasMaxLength(500);
+                u.Property(u => u.FullName).IsRequired().HasMaxLength(500);
+                u.Property(u => u.Email).IsRequired().HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<Schedule_User>(
+                su =>
+                {
+                    su.ToTable("ScheduleUser");
+                    su.HasKey(su => new { su.user_id,su.schedule_id});
+                }
+
+            );
         }
     }
 

@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebCalenderAPI.Data;
 using WebCalenderAPI.Services;
 
@@ -15,7 +20,26 @@ builder.Services.AddDbContext<MyDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("MyDB"));
 
 });
-builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>(); 
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+var secretKey = builder.Configuration["AppSettings:SecretKey"];
+var scretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(scretKeyBytes),
+
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 var app = builder.Build();
 
@@ -27,6 +51,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

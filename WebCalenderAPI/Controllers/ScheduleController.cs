@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCalenderAPI.Data;
 using WebCalenderAPI.Models;
@@ -66,6 +67,7 @@ namespace WebCalenderAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult createNew(ScheduleModel model)
         {
             try

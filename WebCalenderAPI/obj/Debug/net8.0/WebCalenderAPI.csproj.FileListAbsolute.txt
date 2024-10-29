@@ -140,3 +140,6 @@ C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\obj\Debug\net8.0\refint
 C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\obj\Debug\net8.0\WebCalenderAPI.pdb
 C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\obj\Debug\net8.0\WebCalenderAPI.genruntimeconfig.cache
 C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\obj\Debug\net8.0\ref\WebCalenderAPI.dll
+C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\bin\Debug\net8.0\Microsoft.Bcl.TimeProvider.dll
+C:\Users\user\source\repos\WebCalenderAPI\WebCalenderAPI\obj\Debug\net8.0\WebCalenderAPI.sourcelink.json

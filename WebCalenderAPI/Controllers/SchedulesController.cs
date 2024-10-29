@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebCalenderAPI.Models;
 using WebCalenderAPI.Services;
@@ -98,6 +99,7 @@ namespace WebCalenderAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(ScheduleAdd scheduleAdd)
         {
             try
