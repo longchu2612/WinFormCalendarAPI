@@ -11,7 +11,7 @@ namespace WebCalenderAPI.Data
         public DbSet<User> Uses { get; set; }
         public DbSet<Schedule_User> schedule_Users {  get; set; }
         
-        public DbSet<RefreshToken> refreshTokens { get; set; } 
+        public DbSet<RefresherToken> RefresherTokens { get; set; } 
 
         public DbSet<UserToken> userTokens { get; set; }
 

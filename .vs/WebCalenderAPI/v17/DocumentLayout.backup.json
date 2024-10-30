@@ -7,28 +7,24 @@
       "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\usertoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\usertoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\controllers\\schedulescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\controllers\\schedulescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\tokenmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\tokenmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\schedulevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\schedulevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\schedulemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\schedulemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\scheduleadd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,28 +35,56 @@
       "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\refreshtoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\controllers\\schedulescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\controllers\\schedulescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\models\\usertoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\models\\usertoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\schedule_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\schedule_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\mydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\schedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\schedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\services\\ischedulerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\services\\ischedulerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\services\\schedulerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\services\\schedulerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\appsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\data\\schedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\data\\schedule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|c:\\users\\user\\source\\repos\\webcalenderapi\\webcalenderapi\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{859AB173-DF29-4517-9E6F-3172AC0980F2}|WebCalenderAPI\\WebCalenderAPI.csproj|solutionrelative:webcalenderapi\\controllers\\schedulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,47 +94,132 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 14,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 15,
+              "Title": "ScheduleRepository.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Services\\ScheduleRepository.cs",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\Services\\ScheduleRepository.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Services\\ScheduleRepository.cs",
+              "RelativeToolTip": "WebCalenderAPI\\Services\\ScheduleRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T03:18:33.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\appsettings.Development.json",
+              "RelativeToolTip": "WebCalenderAPI\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-10-29T03:18:22.386Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "UserToken.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\UserToken.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\UserToken.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\UserToken.cs",
               "RelativeToolTip": "WebCalenderAPI\\Models\\UserToken.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAA1wBEAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-28T11:05:11.955Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "ScheduleVM.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ScheduleVM.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\ScheduleVM.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ScheduleVM.cs",
               "RelativeToolTip": "WebCalenderAPI\\Models\\ScheduleVM.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-28T10:56:22.935Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "WebCalenderAPI\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAgwFgAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T16:01:09.864Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "IScheduleRepository.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Services\\IScheduleRepository.cs",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\Services\\IScheduleRepository.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Services\\IScheduleRepository.cs",
+              "RelativeToolTip": "WebCalenderAPI\\Services\\IScheduleRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T03:43:10.353Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\User.cs",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\Data\\User.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\User.cs",
+              "RelativeToolTip": "WebCalenderAPI\\Data\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T04:50:25.855Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "ScheduleAdd.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ScheduleAdd.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\ScheduleAdd.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ScheduleAdd.cs",
               "RelativeToolTip": "WebCalenderAPI\\Models\\ScheduleAdd.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-28T10:56:21.532Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 10,
+              "Title": "Schedule_User.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\Schedule_User.cs",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\Data\\Schedule_User.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\Schedule_User.cs",
+              "RelativeToolTip": "WebCalenderAPI\\Data\\Schedule_User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T04:50:26.523Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ScheduleModel.cs",
+              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ScheduleModel.cs",
+              "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\ScheduleModel.cs",
+              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ScheduleModel.cs",
+              "RelativeToolTip": "WebCalenderAPI\\Models\\ScheduleModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-29T10:20:44.004Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\appsettings.json",
               "RelativeDocumentMoniker": "WebCalenderAPI\\appsettings.json",
@@ -122,19 +231,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 16,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Program.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Program.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Program.cs",
               "RelativeToolTip": "WebCalenderAPI\\Program.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAACcAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACgAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T10:44:45.83Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "AppSettings.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\AppSettings.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Data\\AppSettings.cs",
@@ -146,61 +255,61 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 1,
               "Title": "RefreshToken.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\RefreshToken.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Data\\RefreshToken.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\RefreshToken.cs",
               "RelativeToolTip": "WebCalenderAPI\\Data\\RefreshToken.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwAoAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T08:06:47.776Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "LoginModel.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\LoginModel.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\LoginModel.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\LoginModel.cs",
               "RelativeToolTip": "WebCalenderAPI\\Models\\LoginModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T08:05:06.602Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 11,
               "Title": "MyDbContext.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\MyDbContext.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Data\\MyDbContext.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\MyDbContext.cs",
               "RelativeToolTip": "WebCalenderAPI\\Data\\MyDbContext.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAQwA8AAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAkwAoAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T08:05:02.205Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 12,
               "Title": "Schedule.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\Schedule.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Data\\Schedule.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Data\\Schedule.cs",
               "RelativeToolTip": "WebCalenderAPI\\Data\\Schedule.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T08:05:00.381Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "ApiResponse.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ApiResponse.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\ApiResponse.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\ApiResponse.cs",
               "RelativeToolTip": "WebCalenderAPI\\Models\\ApiResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T04:04:54.139Z"
             },
@@ -212,25 +321,25 @@
               "RelativeDocumentMoniker": "WebCalenderAPI\\Models\\TokenModel.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Models\\TokenModel.cs",
               "RelativeToolTip": "WebCalenderAPI\\Models\\TokenModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T04:03:25.497Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 2,
               "Title": "SchedulesController.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\SchedulesController.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Controllers\\SchedulesController.cs",
               "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\SchedulesController.cs",
               "RelativeToolTip": "WebCalenderAPI\\Controllers\\SchedulesController.cs",
-              "ViewState": "AgIAAE4AAAAAAAAAAAAmwGUAAAASAAAAAAAAAA==",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAmwGUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-23T02:09:24.75Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 20,
               "Title": "ScheduleController.cs",
               "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\ScheduleController.cs",
               "RelativeDocumentMoniker": "WebCalenderAPI\\Controllers\\ScheduleController.cs",
@@ -239,19 +348,6 @@
               "ViewState": "AgIAAD8AAAAAAAAAAAAAAEUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-22T17:11:08.609Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\UserController.cs",
-              "RelativeDocumentMoniker": "WebCalenderAPI\\Controllers\\UserController.cs",
-              "ToolTip": "C:\\Users\\user\\source\\repos\\WebCalenderAPI\\WebCalenderAPI\\Controllers\\UserController.cs",
-              "RelativeToolTip": "WebCalenderAPI\\Controllers\\UserController.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAA7wFcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-22T16:01:09.864Z",
-              "EditorCaption": ""
             }
           ]
         }

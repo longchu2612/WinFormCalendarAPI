@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebCalenderAPI.Data
 {
-    public class RefreshToken
+    [Table("RefresherToken")]
+    public class RefresherToken
     {
        
         public Guid Id { get; set; }
@@ -16,7 +17,7 @@ namespace WebCalenderAPI.Data
         // đã được sử dụng?
         public bool IsUsed { get; set; }
         // đã được thu hồi
-        public bool? IsRevoked { get; set; }
+        public bool IsRevoked { get; set; }
         // đưiọc tạo ngày nào?
         public DateTime? IssuedAt { get; set; }
         //hết hạn vào lúc nào

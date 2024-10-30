@@ -238,6 +238,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "WebCalenderAPI.Controllers.UserController",
+    "Method": "RenewToken",
+    "RelativePath": "api/User/RenewToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "WebCalenderAPI.Models.TokenModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebCalenderAPI.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

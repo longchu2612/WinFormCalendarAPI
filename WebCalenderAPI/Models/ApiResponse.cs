@@ -6,9 +6,9 @@
 
         public string Message { get; set; }
 
-        public object Data_Token { get; set; }  
+        public object Data { get; set; }  
         
-        public object Refresh_Token { get; set; }
+        //public object Refresh_Token { get; set; }
 
     }
 }
