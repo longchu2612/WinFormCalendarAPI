@@ -79,7 +79,7 @@ namespace WebCalenderAPI.Controllers
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(60),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
                 
             };
@@ -99,7 +99,7 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(120)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(600)
 
             };
 
@@ -149,7 +149,7 @@ namespace WebCalenderAPI.Controllers
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(60),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
 
             };
@@ -159,7 +159,7 @@ namespace WebCalenderAPI.Controllers
         }
 
         [HttpPost("RenewToken")]
-        public async Task<IActionResult> RenewToken(TokenModel model)
+        public async Task<IActionResult> RenewToken([FromBody]TokenModel model)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
@@ -246,9 +246,9 @@ namespace WebCalenderAPI.Controllers
                         errorCode = "TokenRevoked"
                     });
                 }
-                if (storedToken.ExpiredAt < DateTime.UtcNow.ToLocalTime())
+                if (storedToken.ExpiredAt < DateTime.Now)
                 {
-                    var testDate = DateTime.UtcNow.ToLocalTime();
+                    var testDate = DateTime.Now;
                     Console.WriteLine(testDate);
 
 
@@ -276,17 +276,23 @@ namespace WebCalenderAPI.Controllers
                         return Unauthorized(new ApiResponse { Success = false, Message = "Access Token ID does not match Refresh Token ID", errorCode="AccessTokenNotMatch" });
                     }
 
-                    if (expiredDate.ToLocalTime() > DateTime.UtcNow.ToLocalTime())
+                    if (expiredDate.ToLocalTime() > DateTime.Now)
                     {
                         return StatusCode(StatusCodes.Status409Conflict, new ApiResponse { Success = false, Message = "Access Token has not expired" });
                     }
                     else
                     {
+                        var access_token = GenerateAccessToken(user);
+                        Console.WriteLine(access_token);
+                        var tokenInVerificationUpdate = jwtTokenHandler.ValidateToken(access_token, tokenValidateParam, out var validateTokenUpdate);
+                        var jtiUpdate = tokenInVerificationUpdate.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+                        storedToken.JwtId = jtiUpdate;
+                        _context.SaveChanges();
                         return Ok(new ApiResponse
                         {
                             Success = true,
                             Message = "Add new access Token",
-                            accessToken = GenerateAccessToken(user)
+                            accessToken = access_token
                         });
                     }
                 }
