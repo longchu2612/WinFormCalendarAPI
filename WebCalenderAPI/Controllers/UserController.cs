@@ -80,7 +80,7 @@ namespace WebCalenderAPI.Controllers
                     
 
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(20),
+                Expires = DateTime.UtcNow.AddSeconds(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
                 
             };
