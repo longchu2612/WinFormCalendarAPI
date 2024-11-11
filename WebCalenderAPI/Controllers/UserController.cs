@@ -11,6 +11,7 @@ using WebCalenderAPI.Data;
 using WebCalenderAPI.Models;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace WebCalenderAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace WebCalenderAPI.Controllers
             var user = _context.Uses.SingleOrDefault(p => p.UserName == model.userName && p.Password == model.password);
             if(user == null)
             {
-                return Ok(new ApiResponse
+                return BadRequest(new ApiResponse
                 {
                     Success = false,
                     Message = "Invalid username/password"
@@ -49,7 +50,8 @@ namespace WebCalenderAPI.Controllers
                 {
                     Success = true,
                     Message = "Authentication success",
-                    Data = token,
+                    accessToken = token.AccessToken,
+                    refreshToken = token.RefreshToken
                    
                 });
             }
@@ -73,14 +75,11 @@ namespace WebCalenderAPI.Controllers
                     new Claim("UserName", user.UserName),
                     new Claim("Id", user.Id.ToString()),
                     new Claim("TokenId", Guid.NewGuid().ToString()),
+                   
 
                     //roles
-
-
-                    
-
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(20),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
                 
             };
@@ -97,10 +96,10 @@ namespace WebCalenderAPI.Controllers
                 JwtId = token.Id,
                 user = user,
                 Token = refreshToken,
-                IsUsed = false,
+                IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddHours(1)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(120)
 
             };
 
@@ -130,6 +129,35 @@ namespace WebCalenderAPI.Controllers
             }
         }
 
+        private string GenerateAccessToken(User user)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var secretKeybytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    //new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("UserName", user.UserName),
+                    new Claim("Id", user.Id.ToString()),
+                    new Claim("TokenId", Guid.NewGuid().ToString()),
+                   
+
+                    //roles
+                }),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(60),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
+
+            };
+            var token = jwtTokenHandler.CreateToken(tokenDescription);
+            var accessToken = jwtTokenHandler.WriteToken(token);
+            return accessToken;
+        }
+
         [HttpPost("RenewToken")]
         public async Task<IActionResult> RenewToken(TokenModel model)
         {
@@ -151,99 +179,196 @@ namespace WebCalenderAPI.Controllers
 
             try
             {
-                var tokenInVerification = jwtTokenHandler.ValidateToken(model.AccessToken, tokenValidateParam, out var validateToken);
-
-                    // check alg
-                    JwtSecurityToken jwtSecurityToken = validateToken as JwtSecurityToken;
-                    var result = jwtSecurityToken.Header.Alg.
-                        Equals(SecurityAlgorithms.HmacSha512, StringComparison.InvariantCultureIgnoreCase);
-
-                    if (!result)
-                    {
-                        return BadRequest(new ApiResponse
-                        {
-                            Success = false,
-                            Message = "Invalid Token"
-
-                        });
-                    }
-
-
-                //Check access token expire
-                var utcExpireDate = long.Parse(tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-                var expireDate = convertUnixTimeToDateTime(utcExpireDate);
-                if(expireDate > DateTime.UtcNow)
-                {
-                    return Ok(new ApiResponse
-                    {
-                        Success = false,
-                        Message = "Token has not expired"
-                    });
-                }
-
                 //check 4: Check refreshtoken in DB
-                var storedToken = _context.RefresherTokens.FirstOrDefault(x => x.Token == model.RefreshToken);
-                if(storedToken == null)
-                {
-                    return Ok(new ApiResponse
-                    {
-                        Success = false,
-                        Message = "Refresh Token has not expired"
-                    });
-                }
+
+
+                var storedToken = _context.RefresherTokens.Include(x => x.user).FirstOrDefault(x => x.Token == model.RefreshToken);
+                Console.WriteLine(storedToken);
+                //var user = await _context.Uses.SingleOrDefaultAsync(nd => nd.Id == storedToken.user.Id);
+
+
+                //if (storedToken == null)
+                //{
+                //    return NotFound(new ApiResponse { Success = false, Message = "Refresh Token not found in database" });
+                //}
 
                 //check 5: check refreshtoken is used/ revoked
-                if (storedToken.IsUsed)
-                {
-                    return Ok(new ApiResponse
-                    {
-                        Success = false,
-                        Message = "The refresh token has is used"
-                    });
-                }
+                var tokenInVerification = jwtTokenHandler.ValidateToken(model.AccessToken, tokenValidateParam, out var validateToken);
+                //if (storedToken.IsUsed == true && storedToken.IsRevoked == false)
+                //{
+                //    var accessToken = GenerateAccessToken(user);
+                //    var jwtId = GetJtiFromToken(accessToken);
+                //    storedToken.JwtId = jwtId;
+                //    _context.Update(storedToken);
+                //    await _context.SaveChangesAsync();
+                //    var newToken = new TokenModel
+                //    {
+                //        AccessToken = accessToken
+                //    };
+                //    return Ok(new ApiResponse { Success = true, Message = "New access token generated", accessToken = accessToken });
+                //}
 
-                if (storedToken.IsRevoked)
-                {
-                    return Ok(new ApiResponse
-                    {
-                        Success = false,
-                        Message = "The refresh token has is revoked"
-                    });
-                }
+                //if (storedToken.IsRevoked == true)
+                //{
+
+                //    return Unauthorized(new ApiResponse { Success = false, Message = "Refresh token has been revoked" });
+                //}
 
                 //check 6: AccessToken id == jwtId in Refresh token
-                var jti = tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
-                if(jti != storedToken.JwtId)
+                //---------------
+
+                //var jti = tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+                //if (jti != storedToken.JwtId)
+                //{
+                //    return Unauthorized(new ApiResponse { Success = false, Message = "Access Token ID does not match Refresh Token ID" });
+                //}
+                //-------------------
+
+
+                //check: Check ExpireAt of refresh token.
+
+                if (storedToken == null)
                 {
-                    return Ok(new ApiResponse
+                    return Unauthorized(new ApiResponse
                     {
                         Success = false,
-                        Message = "Acces Id not equal Fresh Id"
+                        Message = "RefreshToken is not in database",
+                        errorCode = "TokenNotFound"
+                    });
+
+                }
+                if(storedToken.IsRevoked == true)
+                {
+                    return Unauthorized(new ApiResponse
+                    {
+                        Success = false,
+                        Message = "RefreshToken deleted",
+                        errorCode = "TokenRevoked"
                     });
                 }
-                // Update token is used
+                if (storedToken.ExpiredAt < DateTime.UtcNow.ToLocalTime())
+                {
+                    var testDate = DateTime.UtcNow.ToLocalTime();
+                    Console.WriteLine(testDate);
 
-                storedToken.IsUsed = true;
-                storedToken.IsRevoked = true;
-                _context.Update(storedToken);
-                await _context.SaveChangesAsync();
+
+                    storedToken.IsRevoked = true;
+                    _context.Update(storedToken);
+                    await _context.SaveChangesAsync();
+                    return Unauthorized(new ApiResponse { Success = false, Message = "RefreshToken has end date", errorCode = "TokenExpire" });
+                }
+                else
+                {
+                    
+                    var utcExpireDate = long.Parse(tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                    var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
+                    var user = await _context.Uses.SingleOrDefaultAsync(nd => nd.Id == storedToken.user.Id);
+                    JwtSecurityToken jwtSecurityToken = validateToken as JwtSecurityToken;
+                    var jti = tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+                    var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+                    if (!result)
+                    {
+                        return Unauthorized(new ApiResponse {Success = false, Message ="Access Token is invalid", errorCode="AccessTokenInvalid"});
+                    }
+
+                    if(storedToken.JwtId != jti)
+                    {
+                        return Unauthorized(new ApiResponse { Success = false, Message = "Access Token ID does not match Refresh Token ID", errorCode="AccessTokenNotMatch" });
+                    }
+
+                    if (expiredDate.ToLocalTime() > DateTime.UtcNow.ToLocalTime())
+                    {
+                        return StatusCode(StatusCodes.Status409Conflict, new ApiResponse { Success = false, Message = "Access Token has not expired" });
+                    }
+                    else
+                    {
+                        return Ok(new ApiResponse
+                        {
+                            Success = true,
+                            Message = "Add new access Token",
+                            accessToken = GenerateAccessToken(user)
+                        });
+                    }
+                }
+
+
+
+                // check alg
+                //JwtSecurityToken 
+                //jwtSecurityToken = validateToken as JwtSecurityToken;
+                //var result = jwtSecurityToken.Header.Alg.
+                //    Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+
+                //if (!result)
+                //{
+                //    return Unauthorized(new ApiResponse
+                //    {
+                //        Success = false,
+                //        Message = "Invalid Token"
+
+                //    });
+                //}
+
+                //check 2:Check access token expire
+                //var utcExpireDate = long.Parse(tokenInVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                //var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
+                //if (expiredDate.ToLocalTime() > DateTime.UtcNow.ToLocalTime())
+                //{
+                //    return StatusCode(StatusCodes.Status409Conflict, new ApiResponse { Success = false, Message = "Access Token has not expired" });
+                //}
+
+
+                
+
+               
+                
+              
+                //if (storedToken.ExpiredAt < DateTime.UtcNow.ToLocalTime())
+                //{
+
+                //    var newToken = await GenerateToken(user);
+
+                //    return Ok(new ApiResponse
+                //    {
+                //        Success = false,
+                //        Message = "Refresh has expired",
+                //        Data = newToken
+                //    });
+
+                //}
+
+                // Update token is used
+                
+                //-----------------------
+                //storedToken.IsUsed = true;
+                //storedToken.IsRevoked = true;
+                //_context.Update(storedToken);
+                //await _context.SaveChangesAsync();
+
+                //--------------------------
 
                 // Create new token
-                var user = await _context.Uses.SingleOrDefaultAsync(nd => nd.Id == storedToken.user.Id);
-                var token = await GenerateToken(user);
-
-                return Ok(new ApiResponse
-                {
-                    Success = true,
-                    Message = "Renew token success",
-                    Data = token
-                });
-
-
-
+                //--------------------
+                //var token = await GenerateToken(user);
+                //------------------------------
+                //var refreshToken = storedToken.Token;
+                //var token = new TokenModel
+                //{
+                //    AccessToken = accessToken,
+                //    RefreshToken = refreshToken,
+                //};
+                //return Ok(new ApiResponse
+                //{
+                //    Success = true,
+                //    Message = "Renew token success",
+                //    accessToken = token.AccessToken,
+                //    refreshToken = token.RefreshToken
+                //});
 
             }
             catch (Exception ex) {
+
+                Console.WriteLine(ex.ToString());
 
                 return BadRequest(new ApiResponse
                 {
@@ -255,11 +380,22 @@ namespace WebCalenderAPI.Controllers
 
            
         }
+       
+
+        private string GetJtiFromToken(string accessToken)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var tokenInVerification = jwtTokenHandler.ReadToken(accessToken) as JwtSecurityToken;
+            var jti = tokenInVerification?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
+            return jti;
+        }
+
+
 
         private DateTime convertUnixTimeToDateTime(long utcExpireDate)
         {
             var dateTimeInterval = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTimeInterval.AddSeconds(utcExpireDate).ToUniversalTime();
+            dateTimeInterval = dateTimeInterval.AddSeconds(utcExpireDate).ToUniversalTime();
 
             return dateTimeInterval;
         }

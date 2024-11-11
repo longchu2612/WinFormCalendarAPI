@@ -10,7 +10,7 @@ namespace WebCalenderAPI.Data
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<User> Uses { get; set; }
         public DbSet<Schedule_User> schedule_Users {  get; set; }
-        
+
         public DbSet<RefresherToken> RefresherTokens { get; set; } 
 
         public DbSet<UserToken> userTokens { get; set; }
@@ -45,8 +45,8 @@ namespace WebCalenderAPI.Data
             modelBuilder.Entity<Schedule_User>(
                 su =>
                 {
-                    su.ToTable("ScheduleUser");
-                    su.HasKey(su => new { su.user_id,su.schedule_id});
+                    su.ToTable("Schedule_User");
+                    su.HasKey(su => new { su.UserId, su.ScheduleId });
                 }
 
             );
