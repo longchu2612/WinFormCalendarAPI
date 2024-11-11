@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Formatting.Json;
+using System.Runtime.Serialization;
 using System.Text;
 using WebCalenderAPI.Data;
 using WebCalenderAPI.Services;
@@ -23,6 +26,17 @@ builder.Services.AddDbContext<MyDbContext>(option =>
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
+builder.Host.UseSerilog((ctx, config) =>
+{
+    config.WriteTo.Console().MinimumLevel.Information();
+    config.WriteTo.File(
+          path: AppDomain.CurrentDomain.BaseDirectory + "/logs/log-.txt",
+          rollingInterval : RollingInterval.Day,
+          rollOnFileSizeLimit: true,
+          formatter: new JsonFormatter()).MinimumLevel.Information();
+
+});
+
 var secretKey = builder.Configuration["AppSettings:SecretKey"];
 var scretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
 
@@ -42,6 +56,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

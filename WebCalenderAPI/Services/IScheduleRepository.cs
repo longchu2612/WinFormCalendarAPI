@@ -12,13 +12,19 @@ namespace WebCalenderAPI.Services
 
         List<ScheduleVM> getByDateWithReason(DateTime dateTime);
 
+        List<ScheduleVM> getByDateWithReasonWithUserId(int userId, DateTime dateTime);
+
+        List<ScheduleVM> getAllScheduleWithoutReason(int userId, DateTime dateTime);
+
         ScheduleVM Add(ScheduleAdd model);
 
         void Update(ScheduleVM schedule);
 
         void Delete(int id);
 
-        ScheduleVM AddScheduleWithDate(DateTime dateTime);
+        ScheduleVM AddScheduleWithDate(ScheduleMeta meta);
+
+        List<ScheduleVM> getAllScheduleByUser(int userId);
 
         
     }

@@ -8,6 +8,7 @@ namespace WebCalenderAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;
@@ -26,6 +27,21 @@ namespace WebCalenderAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [HttpGet("getSchedule/{userId}")]
+        public IActionResult GetScheduleByUserId(int userId)
+        {
+            try
+            {
+                return Ok(_scheduleRepository.getAllScheduleByUser(userId));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -63,8 +79,35 @@ namespace WebCalenderAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         
-        } 
+        }
 
+        [HttpGet("getAllDateByUserId")]
+        public IActionResult GetByDateTimeByUserIdWithHavingReason([FromQuery]DateTime dateTime,[FromQuery] int userId)
+        {
+            try
+            {
+                return Ok(_scheduleRepository.getByDateWithReasonWithUserId(userId, dateTime));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+
+        [HttpGet("getAllDateByUserIdWithoutReason")]
+        public IActionResult GetByDateTimeByUserIdWithoutReason([FromQuery] DateTime dateTime, [FromQuery] int userId)
+        {
+            try
+            {
+                return Ok(_scheduleRepository.getAllScheduleWithoutReason(userId, dateTime));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id,ScheduleVM scheduleVM)
@@ -99,7 +142,7 @@ namespace WebCalenderAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        
         public IActionResult Add(ScheduleAdd scheduleAdd)
         {
             try
@@ -112,18 +155,20 @@ namespace WebCalenderAPI.Controllers
             }
         }
 
-        [HttpPost("{dateTime}")]
-        public IActionResult AddScheduleWithDate(DateTime dateTime)
+        [HttpPost("insertByDate")]
+        public IActionResult AddScheduleWithDate([FromBody] ScheduleMeta meata)
         {
             try
             {
-                return Ok(_scheduleRepository.AddScheduleWithDate(dateTime));
+                return Ok(_scheduleRepository.AddScheduleWithDate(meata));
             }
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
 
     }
 }
