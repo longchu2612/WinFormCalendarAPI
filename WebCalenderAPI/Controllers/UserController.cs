@@ -99,7 +99,7 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(600)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddMinutes(30)
 
             };
 

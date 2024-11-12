@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebCalenderAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9ab09b4241b9eaff976a8df7b96ca5ad0894d0ba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+50a0661dba075d943c4ff864ab76a0f3aca587b9")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebCalenderAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebCalenderAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
