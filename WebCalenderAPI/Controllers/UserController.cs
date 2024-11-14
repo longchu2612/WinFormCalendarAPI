@@ -12,6 +12,7 @@ using WebCalenderAPI.Models;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace WebCalenderAPI.Controllers
 {
@@ -22,14 +23,18 @@ namespace WebCalenderAPI.Controllers
         private readonly MyDbContext _context;
         private readonly IOptionsMonitor<AppSettings> _optionsMonitor;
         private readonly AppSettings _appSettings;
-        public UserController(MyDbContext context,IOptionsMonitor<AppSettings> optionsMonitor) { 
+        private readonly IDistributedCache _distributedCache;
+        public UserController(MyDbContext context,IOptionsMonitor<AppSettings> optionsMonitor,IDistributedCache distributedCache) { 
               _context = context;
               _appSettings =  optionsMonitor.CurrentValue;
+              _distributedCache = distributedCache;
         }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Validate(LoginModel model)
         {
+
+            
             var user = _context.Uses.SingleOrDefault(p => p.UserName == model.userName && p.Password == model.password);
             if(user == null)
             {
@@ -41,7 +46,6 @@ namespace WebCalenderAPI.Controllers
             }
             else
             {
-
                 // cấp token
                 var token = await GenerateToken(user);
                 
