@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.Extensions.Caching.Distributed;
+using WebCalenderAPI.Services;
 
 namespace WebCalenderAPI.Controllers
 {
@@ -24,10 +25,12 @@ namespace WebCalenderAPI.Controllers
         private readonly IOptionsMonitor<AppSettings> _optionsMonitor;
         private readonly AppSettings _appSettings;
         private readonly IDistributedCache _distributedCache;
-        public UserController(MyDbContext context,IOptionsMonitor<AppSettings> optionsMonitor,IDistributedCache distributedCache) { 
+        private readonly ICacheService _cacheService;
+        public UserController(MyDbContext context,IOptionsMonitor<AppSettings> optionsMonitor,IDistributedCache distributedCache,ICacheService cacheService) { 
               _context = context;
               _appSettings =  optionsMonitor.CurrentValue;
               _distributedCache = distributedCache;
+              _cacheService = cacheService;
         }
 
         [HttpPost("Login")]
@@ -48,7 +51,9 @@ namespace WebCalenderAPI.Controllers
             {
                 // cấp token
                 var token = await GenerateToken(user);
-                
+
+                _cacheService.SetData("accessToken", token.AccessToken);
+                _cacheService.SetData("refreshToken", token.RefreshToken);
 
                 return Ok(new ApiResponse
                 {
@@ -103,7 +108,7 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddMinutes(30)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(180)
 
             };
 
@@ -166,6 +171,9 @@ namespace WebCalenderAPI.Controllers
         public async Task<IActionResult> RenewToken([FromBody]TokenModel model)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
+
+            Console.WriteLine(model.AccessToken);
+            Console.WriteLine(model.RefreshToken);
 
             var secretKeybytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
 

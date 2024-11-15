@@ -25,9 +25,5 @@ namespace WebCalenderAPI.Services
         ScheduleVM AddScheduleWithDate(ScheduleMeta meta);
 
         List<ScheduleVM> getAllScheduleByUser(int userId);
-
-        
-
-        
     }
 }

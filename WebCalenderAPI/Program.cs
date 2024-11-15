@@ -9,6 +9,7 @@ using Serilog.Formatting.Json;
 using System.Runtime.Serialization;
 using System.Text;
 using WebCalenderAPI.Data;
+using WebCalenderAPI.Helper;
 using WebCalenderAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,8 @@ builder.Services.AddDbContext<MyDbContext>(option =>
 
 });
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<TokenHelper>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Host.UseSerilog((ctx, config) =>

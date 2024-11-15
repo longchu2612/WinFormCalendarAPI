@@ -25,12 +25,21 @@ namespace WebCalenderAPI.Services
 
         public object RemoveData(string key)
         {
-            throw new NotImplementedException();
+            var _exist = _cacheDb.KeyExists(key);
+            if (_exist) return _cacheDb.KeyDelete(key);
+
+            return false;
         }
 
-        public bool SetData<T>(string key, T value, DateTimeOffset expirationTime)
+        public bool SetData<T>(string key, T value)
         {
-            throw new NotImplementedException();
+            return _cacheDb.StringSet(key, JsonSerializer.Serialize(value));
         }
+
+        //public bool SetData<T>(string key, T value, DateTime expirationTime)
+        //{
+        //    var expirtyTime = expirationTime.Subtract(DateTime.Now);
+        //    return _cacheDb.StringSet(key, JsonSerializer.Serialize(value), expirtyTime);
+        //}
     }
 }
