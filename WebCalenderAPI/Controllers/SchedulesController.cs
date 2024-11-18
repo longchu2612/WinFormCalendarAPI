@@ -67,17 +67,23 @@ namespace WebCalenderAPI.Controllers
             return null;
         }
 
+
+
         [HttpGet("getSchedule/{userId}")]
         public async Task<IActionResult> GetScheduleByUserId(int userId)
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
-                {
-                    return tokenResult;
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                Console.WriteLine(authorizationHeader[0]);
+                Console.WriteLine(authorizationHeader[1]);
 
-                }
+                //var tokenResult = await HandleTokenRefresh();
+                //if (tokenResult != null)
+                //{
+                //    return tokenResult;
+
+                //}
                 return Ok(_scheduleRepository.getAllScheduleByUser(userId));
             }
             catch
@@ -127,12 +133,18 @@ namespace WebCalenderAPI.Controllers
         [HttpGet("getAllDate/{dateTime}")]
         public async Task<IActionResult> GetByDateTimeWithHavingReason(DateTime dateTime) {
             try {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                if(authorizationHeader.Count == 0 || authorizationHeader[0].StartsWith("Bearer "))
                 {
-                    return tokenResult;
-
+                    return Unauthorized(new CheckTokenResult
+                    {
+                        Error = "AccessToken is missing or not valid"
+                    });
                 }
+
+                var accessToken =  
+               
+                
                 return Ok(_scheduleRepository.getByDateWithReason(dateTime));
             }
             catch
@@ -147,12 +159,8 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
-                {
-                    return tokenResult;
-
-                }
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                
                 return Ok(_scheduleRepository.getByDateWithReasonWithUserId(userId, dateTime));
             }
             catch

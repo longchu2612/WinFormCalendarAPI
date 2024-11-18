@@ -51,9 +51,9 @@ namespace WebCalenderAPI.Controllers
             {
                 // cấp token
                 var token = await GenerateToken(user);
-
-                _cacheService.SetData("accessToken", token.AccessToken);
-                _cacheService.SetData("refreshToken", token.RefreshToken);
+                var id = getUserIdFromAccessToken(token.AccessToken);
+                _cacheService.SetData("accessToken_"+id, token.AccessToken);
+                _cacheService.SetData("refreshToken_"+id, token.RefreshToken);
 
                 return Ok(new ApiResponse
                 {
@@ -398,7 +398,23 @@ namespace WebCalenderAPI.Controllers
 
            
         }
-       
+
+        public static string getUserIdFromAccessToken(string accessToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            if (!tokenHandler.CanReadToken(accessToken))
+            {
+                Console.WriteLine("Token không hợp lệ.");
+                return null;
+            }
+            var jwtToken = tokenHandler.ReadJwtToken(accessToken);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "Id");
+
+
+            return userIdClaim?.Value;
+        }
+
 
         private string GetJtiFromToken(string accessToken)
         {
