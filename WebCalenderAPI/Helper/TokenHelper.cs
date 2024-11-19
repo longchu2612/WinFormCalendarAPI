@@ -17,7 +17,7 @@ namespace WebCalenderAPI.Helper
         private readonly MyDbContext _context;
         private readonly AppSettings _appSettings;
 
-        public TokenHelper(MyDbContext context,IOptionsMonitor<AppSettings> optionsMonitor)
+        public TokenHelper(MyDbContext context, IOptionsMonitor<AppSettings> optionsMonitor)
         {
             _context = context;
             _appSettings = optionsMonitor.CurrentValue;
@@ -98,7 +98,7 @@ namespace WebCalenderAPI.Helper
             }
         }
 
-        private string GenerateAccessToken(User user)
+        public string GenerateAccessToken(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var secretKeybytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);

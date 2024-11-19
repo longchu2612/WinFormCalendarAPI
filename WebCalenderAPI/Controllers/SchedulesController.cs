@@ -1,6 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using WebCalenderAPI.Data;
 using WebCalenderAPI.Helper;
 using WebCalenderAPI.Models;
 using WebCalenderAPI.Services;
@@ -15,12 +22,16 @@ namespace WebCalenderAPI.Controllers
         private readonly IScheduleRepository _scheduleRepository;
         private readonly ICacheService _cacheService;
         private readonly TokenHelper _tokenHelper;
+        private readonly AppSettings _appSettings;
+        private readonly MyDbContext _context;
 
-        public SchedulesController(IScheduleRepository scheduleRepository, ICacheService cacheService, TokenHelper tokenHelper)
+        public SchedulesController(IScheduleRepository scheduleRepository, IOptionsMonitor<AppSettings> optionsMonitor, ICacheService cacheService, TokenHelper tokenHelper, MyDbContext context)
         {
             _scheduleRepository = scheduleRepository;
             _cacheService = cacheService;   
             _tokenHelper = tokenHelper;
+            _appSettings = optionsMonitor.CurrentValue;
+            _context = context;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -134,15 +145,17 @@ namespace WebCalenderAPI.Controllers
         public async Task<IActionResult> GetByDateTimeWithHavingReason(DateTime dateTime) {
             try {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
-                if(authorizationHeader.Count == 0 || authorizationHeader[0].StartsWith("Bearer "))
-                {
-                    return Unauthorized(new CheckTokenResult
-                    {
-                        Error = "AccessToken is missing or not valid"
-                    });
-                }
+                //if(authorizationHeader.Count == 0 || authorizationHeader[0].StartsWith("Bearer "))
+                //{
+                //    return Unauthorized(new CheckTokenResult
+                //    {
+                //        Error = "AccessToken is missing or not valid"
+                //    });
+                //}
 
-                var accessToken =  
+                Console.WriteLine(authorizationHeader);
+
+                
                
                 
                 return Ok(_scheduleRepository.getByDateWithReason(dateTime));
@@ -160,7 +173,53 @@ namespace WebCalenderAPI.Controllers
             try
             {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
-                
+                if (authorizationHeader.Count == 0 || authorizationHeader[0].StartsWith("Bearer "))
+                {
+                    return Unauthorized(new CheckTokenResult
+                    {
+                        Error = "AccessToken is missing or not valid"
+                    });
+                }
+                //get accessToken
+                var accessToken = authorizationHeader[0].Substring(7);
+                // get all claims on token
+                var claimsPrincipal = ValidateAccessToken(accessToken);
+                if(claimsPrincipal == null)
+                {
+                    return Unauthorized(new CheckTokenResult
+                    {
+                        Error = "AccessToken Invalid"
+                    });
+                }
+
+                var tokenUserId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+                if(string.IsNullOrEmpty(tokenUserId) || tokenUserId != userId.ToString())
+                {
+                    return Unauthorized(new CheckTokenResult
+                    {
+                        Error = "UserId invalid"
+                    });
+                }
+                var utcExpireDate = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
+                if(expiredDate.ToLocalTime() < DateTime.Now)
+                {
+                    var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_"+tokenUserId);
+                    if(refreshToken.ExpiredAt < DateTime.Now)
+                    {
+                        var user = await _context.Uses.SingleOrDefaultAsync(u => u.Id.ToString() == tokenUserId);
+                        string newAccessToken = GenerateAccessToken(user);
+                        _cacheService.SetData("accessToken_" + tokenUserId, newAccessToken);
+                    }
+                    else
+                    {
+                        return Unauthorized(new CheckTokenResult
+                        {
+                            Error = "Token has expried"
+                        });
+                    }
+
+                }
                 return Ok(_scheduleRepository.getByDateWithReasonWithUserId(userId, dateTime));
             }
             catch
@@ -168,6 +227,81 @@ namespace WebCalenderAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
+        }
+
+        public string GenerateAccessToken(User user)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var secretKeybytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Subject = new System.Security.Claims.ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    //new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("UserName", user.UserName),
+                    new Claim("Id", user.Id.ToString()),
+                    new Claim("TokenId", Guid.NewGuid().ToString()),
+                   
+
+                    //roles
+                }),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
+
+            };
+            var token = jwtTokenHandler.CreateToken(tokenDescription);
+            var accessToken = jwtTokenHandler.WriteToken(token);
+            return accessToken;
+        }
+
+        private ClaimsPrincipal ValidateAccessToken(string accessToken)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+
+
+                var tokenValidateParam = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = false, // kiem tra nguồn phát hành
+                    ValidateAudience = false, // kiểm tra ngưới nhận
+
+                    ValidateIssuerSigningKey = true, //Kiểm tra chữ ký
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                    ClockSkew = TimeSpan.Zero, // loại bỏ thời gian chênh lệch mặc định 5 phút
+                    ValidateLifetime = false // khong kiem tra het han
+                };
+
+                var pricipal = tokenHandler.ValidateToken(accessToken, tokenValidateParam, out var validatedToken);
+
+                if (validatedToken is JwtSecurityToken jwtToken &&
+                jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return pricipal;
+                }
+
+
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Token validation failed: {ex.Message}");
+            }
+
+            return null;
+            
+        }
+
+        private DateTime convertUnixTimeToDateTime(long utcExpireDate)
+        {
+            var dateTimeInterval = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTimeInterval = dateTimeInterval.AddSeconds(utcExpireDate).ToUniversalTime();
+
+            return dateTimeInterval;
         }
 
         [HttpGet("getAllDateByUserIdWithoutReason")]

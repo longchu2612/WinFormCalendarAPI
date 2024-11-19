@@ -51,16 +51,16 @@ namespace WebCalenderAPI.Controllers
             {
                 // cấp token
                 var token = await GenerateToken(user);
-                var id = getUserIdFromAccessToken(token.AccessToken);
-                _cacheService.SetData("accessToken_"+id, token.AccessToken);
-                _cacheService.SetData("refreshToken_"+id, token.RefreshToken);
+                //var id = getUserIdFromAccessToken(token.AccessToken);
+                //_cacheService.SetData("accessToken_"+id, token.AccessToken);
+                //_cacheService.SetData("refreshToken_"+id, token.RefreshToken);
 
                 return Ok(new ApiResponse
                 {
                     Success = true,
                     Message = "Authentication success",
                     accessToken = token.AccessToken,
-                    refreshToken = token.RefreshToken
+                    
                    
                 });
             }
@@ -95,6 +95,9 @@ namespace WebCalenderAPI.Controllers
 
             var token = jwtTokenHandler.CreateToken(tokenDescription);
             var accessToken = jwtTokenHandler.WriteToken(token);
+
+            _cacheService.SetData("accessToken_"+ user.Id,accessToken);
+
             var refreshToken = GenerateFresherToken();
 
             //Luwu trong database
@@ -111,16 +114,16 @@ namespace WebCalenderAPI.Controllers
                 ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(180)
 
             };
-
-            try
-            {
-                await _context.RefresherTokens.AddAsync(refreshTokenEntity);
-                await _context.SaveChangesAsync();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            _cacheService.SetData("refreshToken_"+ user.Id, refreshToken);
+            //try
+            //{
+            //    await _context.RefresherTokens.AddAsync(refreshTokenEntity);
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch(Exception ex)
+            //{
+            //    Console.WriteLine(ex.ToString());
+            //}
 
             return new TokenModel{
                AccessToken = accessToken,
@@ -179,13 +182,13 @@ namespace WebCalenderAPI.Controllers
 
             var tokenValidateParam = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
+                ValidateIssuer = false, // kiem tra nguồn phát hành
+                ValidateAudience = false, // kiểm tra ngưới nhận
 
-                ValidateIssuerSigningKey = true,
+                ValidateIssuerSigningKey = true, //Kiểm tra chữ ký
                 IssuerSigningKey = new SymmetricSecurityKey(secretKeybytes),
 
-                ClockSkew = TimeSpan.Zero,
+                ClockSkew = TimeSpan.Zero, // loại bỏ thời gian chênh lệch mặc định 5 phút
                 ValidateLifetime = false // khong kiem tra het han
             };
 
