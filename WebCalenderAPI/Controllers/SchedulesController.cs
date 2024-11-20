@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -37,10 +38,7 @@ namespace WebCalenderAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             try {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null) {
-                    return tokenResult;
-                }
+                
                 return Ok(_scheduleRepository.GetALl());
             } catch
             {
@@ -48,35 +46,35 @@ namespace WebCalenderAPI.Controllers
             }
         }
 
-        private async Task<IActionResult> HandleTokenRefresh()
-        {
-            string accessToken = _cacheService.GetData<String>("accessToken");
+        //private async Task<IActionResult> HandleTokenRefresh()
+        //{
+        //    string accessToken = _cacheService.GetData<String>("accessToken");
 
-            string refreshToken = _cacheService.GetData<String>("refreshToken");
+        //    string refreshToken = _cacheService.GetData<String>("refreshToken");
 
-            var tokenModel = new TokenModel
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
-            var checkToken = await _tokenHelper.RenewToken(tokenModel);
-            if (checkToken.Status == "401")
-            {
-                _cacheService.RemoveData("accessToken");
-                _cacheService.RemoveData("refreshToken");
-                return Unauthorized(new CheckTokenResult
-                {
-                    Status = "401",
-                    Error = checkToken.Error
-                });
-            }
-            else if (checkToken.Status == "200")
-            {
-                var acccessToken = checkToken.AccessToken;
-                _cacheService.SetData("accessToken", acccessToken);
-            }
-            return null;
-        }
+        //    var tokenModel = new TokenModel
+        //    {
+        //        AccessToken = accessToken,
+        //        RefreshToken = refreshToken
+        //    };
+        //    var checkToken = await _tokenHelper.RenewToken(tokenModel);
+        //    if (checkToken.Status == "401")
+        //    {
+        //        _cacheService.RemoveData("accessToken");
+        //        _cacheService.RemoveData("refreshToken");
+        //        return Unauthorized(new CheckTokenResult
+        //        {
+        //            Status = "401",
+        //            Error = checkToken.Error
+        //        });
+        //    }
+        //    else if (checkToken.Status == "200")
+        //    {
+        //        var acccessToken = checkToken.AccessToken;
+        //        _cacheService.SetData("accessToken", acccessToken);
+        //    }
+        //    return null;
+        //}
 
 
 
@@ -85,9 +83,8 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
-                Console.WriteLine(authorizationHeader[0]);
-                Console.WriteLine(authorizationHeader[1]);
+                //var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                
 
                 //var tokenResult = await HandleTokenRefresh();
                 //if (tokenResult != null)
@@ -109,12 +106,7 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
-                {
-                    return tokenResult;
-
-                }
+               
                 return Ok(_scheduleRepository.GetById(id));
             }
             catch
@@ -128,12 +120,7 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
-                {
-                    return tokenResult;
-
-                }
+                
                 return Ok(_scheduleRepository.GetByDate(dateTime));
             }
             catch
@@ -144,7 +131,7 @@ namespace WebCalenderAPI.Controllers
         [HttpGet("getAllDate/{dateTime}")]
         public async Task<IActionResult> GetByDateTimeWithHavingReason(DateTime dateTime) {
             try {
-                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                //var authorizationHeader = HttpContext.Request.Headers["Authorization"];
                 //if(authorizationHeader.Count == 0 || authorizationHeader[0].StartsWith("Bearer "))
                 //{
                 //    return Unauthorized(new CheckTokenResult
@@ -153,7 +140,7 @@ namespace WebCalenderAPI.Controllers
                 //    });
                 //}
 
-                Console.WriteLine(authorizationHeader);
+                //Console.WriteLine(authorizationHeader);
 
                 
                
@@ -173,53 +160,17 @@ namespace WebCalenderAPI.Controllers
             try
             {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
-                if (authorizationHeader.Count == 0 || authorizationHeader[0].StartsWith("Bearer "))
+                CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                if (result.Status == "401")
                 {
-                    return Unauthorized(new CheckTokenResult
-                    {
-                        Error = "AccessToken is missing or not valid"
-                    });
+                    return Unauthorized(result.Error);
                 }
-                //get accessToken
-                var accessToken = authorizationHeader[0].Substring(7);
-                // get all claims on token
-                var claimsPrincipal = ValidateAccessToken(accessToken);
-                if(claimsPrincipal == null)
+                else if (result.Status == "201")
                 {
-                    return Unauthorized(new CheckTokenResult
-                    {
-                        Error = "AccessToken Invalid"
-                    });
+                    string accessToken = result.AccessToken;
+                    _cacheService.SetData("accessToken_" + userId, accessToken);
                 }
 
-                var tokenUserId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
-                if(string.IsNullOrEmpty(tokenUserId) || tokenUserId != userId.ToString())
-                {
-                    return Unauthorized(new CheckTokenResult
-                    {
-                        Error = "UserId invalid"
-                    });
-                }
-                var utcExpireDate = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-                var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
-                if(expiredDate.ToLocalTime() < DateTime.Now)
-                {
-                    var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_"+tokenUserId);
-                    if(refreshToken.ExpiredAt < DateTime.Now)
-                    {
-                        var user = await _context.Uses.SingleOrDefaultAsync(u => u.Id.ToString() == tokenUserId);
-                        string newAccessToken = GenerateAccessToken(user);
-                        _cacheService.SetData("accessToken_" + tokenUserId, newAccessToken);
-                    }
-                    else
-                    {
-                        return Unauthorized(new CheckTokenResult
-                        {
-                            Error = "Token has expried"
-                        });
-                    }
-
-                }
                 return Ok(_scheduleRepository.getByDateWithReasonWithUserId(userId, dateTime));
             }
             catch
@@ -229,72 +180,77 @@ namespace WebCalenderAPI.Controllers
 
         }
 
-        public string GenerateAccessToken(User user)
-        {
-            var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var secretKeybytes = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+        //public async Task<CheckTokenResult> CheckValidateToken(StringValues authorizationHeader, int userId)
+        //{
+        //    if (authorizationHeader.Count == 0 || !authorizationHeader[0].StartsWith("Bearer "))
+        //    {
+        //        return new CheckTokenResult
+        //        {
+        //            Status = "401",
+        //            Error = "AccessToken is missing or not valid"
+        //        };
+        //    }
+        //    //get accessToken
+        //    var accessToken = authorizationHeader[0].Substring(7);
+        //    // get all claims on token
+        //    var claimsPrincipal = _tokenHelper.ValidateAccessToken(accessToken);
 
-            var tokenDescription = new SecurityTokenDescriptor
-            {
-                Subject = new System.Security.Claims.ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    //new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim("UserName", user.UserName),
-                    new Claim("Id", user.Id.ToString()),
-                    new Claim("TokenId", Guid.NewGuid().ToString()),
-                   
+        //    if (claimsPrincipal == null)
+        //    {
+        //        return new CheckTokenResult
+        //        {
+        //            Status = "401",
+        //            Error = "AccessToken Invalid"
+        //        };
+        //    }
 
-                    //roles
-                }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
+        //    var tokenUserId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+        //    if (string.IsNullOrEmpty(tokenUserId) || tokenUserId != userId.ToString())
+        //    {
+        //        return new CheckTokenResult
+        //        {
+        //            Status = "401",
+        //            Error = "UserId invalid"
+        //        };
+        //    }
+        //    var utcExpireDate = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+        //    var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
+        //    if (expiredDate.ToLocalTime() < DateTime.Now)
+        //    {
+        //        var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_" + tokenUserId);
+        //        if (refreshToken.ExpiredAt < DateTime.Now)
+        //        {
+        //            var user = await _context.Uses.SingleOrDefaultAsync(u => u.Id.ToString() == tokenUserId);
+        //            string newAccessToken = _tokenHelper.GenerateAccessToken(user);
+        //            return new CheckTokenResult
+        //            {
+        //                Status = "201",
+        //                Error = "Create new acccessToken success",
+        //                AccessToken = newAccessToken
 
-            };
-            var token = jwtTokenHandler.CreateToken(tokenDescription);
-            var accessToken = jwtTokenHandler.WriteToken(token);
-            return accessToken;
-        }
+        //            };
+        //            //_cacheService.SetData("accessToken_" + tokenUserId, newAccessToken);
+        //        }
+        //        else
+        //        {
 
-        private ClaimsPrincipal ValidateAccessToken(string accessToken)
-        {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+        //            return new CheckTokenResult
+        //            {
+        //                Status = "401",
+        //                Error = "Token has expried"
+        //            };
 
+        //        }
 
-                var tokenValidateParam = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = false, // kiem tra nguồn phát hành
-                    ValidateAudience = false, // kiểm tra ngưới nhận
+        //    }
 
-                    ValidateIssuerSigningKey = true, //Kiểm tra chữ ký
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+        //    return new CheckTokenResult
+        //    {
+        //        Status = "200",
+        //        Error = "Access Token has not expired"
+        //    };
 
-                    ClockSkew = TimeSpan.Zero, // loại bỏ thời gian chênh lệch mặc định 5 phút
-                    ValidateLifetime = false // khong kiem tra het han
-                };
-
-                var pricipal = tokenHandler.ValidateToken(accessToken, tokenValidateParam, out var validatedToken);
-
-                if (validatedToken is JwtSecurityToken jwtToken &&
-                jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return pricipal;
-                }
-
-
-            }
-            catch (Exception ex) {
-                Console.WriteLine($"Token validation failed: {ex.Message}");
-            }
-
-            return null;
-            
-        }
+        //}
 
         private DateTime convertUnixTimeToDateTime(long utcExpireDate)
         {
@@ -309,11 +265,16 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                if (result.Status == "401")
                 {
-                    return tokenResult;
-
+                    return Unauthorized(result.Error);
+                }
+                else if (result.Status == "201")
+                {
+                    string accessToken = result.AccessToken;
+                    _cacheService.SetData("accessToken_" + userId, accessToken);
                 }
                 return Ok(_scheduleRepository.getAllScheduleWithoutReason(userId, dateTime));
             }
@@ -327,18 +288,26 @@ namespace WebCalenderAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id,ScheduleVM scheduleVM)
         {
-            var tokenResult = await HandleTokenRefresh();
-            if (tokenResult != null)
-            {
-                return tokenResult;
-
-            }
-            if (id != scheduleVM.id)
-            {
-                return BadRequest();
-            }
             try
             {
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+
+                int? userId = _scheduleRepository.getUserIdFromSchedule(scheduleVM.id);
+                if(userId == null)
+                {
+                    return NotFound();
+                }
+
+                CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                if (result.Status == "401")
+                {
+                    return Unauthorized(result.Error);
+                }
+                else if (result.Status == "201")
+                {
+                    string accessToken = result.AccessToken;
+                    _cacheService.SetData("accessToken_" + userId, accessToken);
+                }
                 _scheduleRepository.Update(scheduleVM);
                 return Ok();
             }
@@ -348,18 +317,23 @@ namespace WebCalenderAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}/{userId}")]
+        public async Task<IActionResult> Delete(int id, int userId)
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                if (result.Status == "401")
                 {
-                    return tokenResult;
-
+                    return Unauthorized(result.Error);
                 }
-                _scheduleRepository.Delete(id);
+                else if (result.Status == "201")
+                {
+                    string accessToken = result.AccessToken;
+                    _cacheService.SetData("accessToken_" + userId, accessToken);
+                }
+                _scheduleRepository.Delete(id,userId);
                 return Ok();
             }
             catch
@@ -374,12 +348,7 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
-                {
-                    return tokenResult;
-
-                }
+                
                 return Ok(_scheduleRepository.Add(scheduleAdd));
             }
             catch
@@ -393,12 +362,18 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                var tokenResult = await HandleTokenRefresh();
-                if (tokenResult != null)
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+                CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, meata.user_id);
+                if (result.Status == "401")
                 {
-                    return tokenResult;
-
+                    return Unauthorized(result.Error);
                 }
+                else if (result.Status == "201")
+                {
+                    string accessToken = result.AccessToken;
+                    _cacheService.SetData("accessToken_" + meata.user_id, accessToken);
+                }
+
                 return Ok(_scheduleRepository.AddScheduleWithDate(meata));
             }
             catch

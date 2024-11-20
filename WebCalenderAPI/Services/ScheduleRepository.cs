@@ -57,14 +57,14 @@ namespace WebCalenderAPI.Services
 
         }
 
-        public void Delete(int id)
+        public void Delete(int id,int userId)
         {
 
             var schedule = _context.Schedules.SingleOrDefault(sche => sche.Id == id);
             if(schedule != null)
             {
-                var scheduleUsers = _context.schedule_Users.Where(su => su.ScheduleId == id).ToList();
-                _context.schedule_Users.RemoveRange(scheduleUsers);
+                var scheduleUsers = _context.schedule_Users.SingleOrDefault(su => su.ScheduleId == id && su.UserId == userId);
+                _context.schedule_Users.Remove(scheduleUsers);
                 _context.Schedules.Remove(schedule);
                 Console.WriteLine(schedule);
                 _context.SaveChanges();
@@ -252,6 +252,16 @@ namespace WebCalenderAPI.Services
                    ToY = schedule.ToY
                 };
             }
+            return null;
+        }
+
+        public int? getUserIdFromSchedule(int schedule_id)
+        {
+           var _schedulesUsers = _context.schedule_Users.SingleOrDefault(sche => sche.ScheduleId == schedule_id);
+           if(_schedulesUsers != null)
+           {
+                return _schedulesUsers.UserId;
+           }
             return null;
         }
 

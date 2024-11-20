@@ -88,7 +88,7 @@ namespace WebCalenderAPI.Controllers
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
                 
             };
@@ -111,7 +111,7 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(180)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddHours(1)
 
             };
             _cacheService.SetData("refreshToken_"+ user.Id, refreshToken);

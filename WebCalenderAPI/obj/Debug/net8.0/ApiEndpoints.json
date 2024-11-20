@@ -160,13 +160,18 @@
   {
     "ContainingType": "WebCalenderAPI.Controllers.SchedulesController",
     "Method": "Delete",
-    "RelativePath": "api/Schedules/{id}",
+    "RelativePath": "api/Schedules/{id}/{userId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
       }

@@ -20,10 +20,12 @@ namespace WebCalenderAPI.Services
 
         void Update(ScheduleVM schedule);
 
-        void Delete(int id);
+        void Delete(int id, int userId);
 
         ScheduleVM AddScheduleWithDate(ScheduleMeta meta);
 
         List<ScheduleVM> getAllScheduleByUser(int userId);
+
+        int? getUserIdFromSchedule(int scheduleId);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using WebCalenderAPI.Data;
 using WebCalenderAPI.Models;
+using WebCalenderAPI.Services;
 
 namespace WebCalenderAPI.Helper
 {
@@ -16,6 +18,7 @@ namespace WebCalenderAPI.Helper
 
         private readonly MyDbContext _context;
         private readonly AppSettings _appSettings;
+        private readonly ICacheService _cacheService;
 
         public TokenHelper(MyDbContext context, IOptionsMonitor<AppSettings> optionsMonitor)
         {
@@ -280,5 +283,119 @@ namespace WebCalenderAPI.Helper
 
 
         }
+        public ClaimsPrincipal ValidateAccessToken(string accessToken)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_appSettings.SecretKey);
+
+
+                var tokenValidateParam = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = false, // kiem tra nguồn phát hành
+                    ValidateAudience = false, // kiểm tra ngưới nhận
+
+                    ValidateIssuerSigningKey = true, //Kiểm tra chữ ký
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                    ClockSkew = TimeSpan.Zero, // loại bỏ thời gian chênh lệch mặc định 5 phút
+                    ValidateLifetime = false // khong kiem tra het han
+                };
+
+                var pricipal = tokenHandler.ValidateToken(accessToken, tokenValidateParam, out var validatedToken);
+
+                if (validatedToken is JwtSecurityToken jwtToken &&
+                jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return pricipal;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Token validation failed: {ex.Message}");
+            }
+
+            return null;
+
+        }
+
+        public async Task<CheckTokenResult> CheckValidateToken(StringValues authorizationHeader, int? userId)
+        {
+            if (authorizationHeader.Count == 0 || !authorizationHeader[0].StartsWith("Bearer "))
+            {
+                return new CheckTokenResult
+                {
+                    Status = "401",
+                    Error = "AccessToken is missing or not valid"
+                };
+            }
+            //get accessToken
+            var accessToken = authorizationHeader[0].Substring(7);
+            // get all claims on token
+            var claimsPrincipal = ValidateAccessToken(accessToken);
+
+            if (claimsPrincipal == null)
+            {
+                return new CheckTokenResult
+                {
+                    Status = "401",
+                    Error = "AccessToken Invalid"
+                };
+            }
+
+            var tokenUserId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+            if (string.IsNullOrEmpty(tokenUserId) || tokenUserId != userId.ToString())
+            {
+                return new CheckTokenResult
+                {
+                    Status = "401",
+                    Error = "UserId invalid"
+                };
+            }
+            var utcExpireDate = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
+            if (expiredDate.ToLocalTime() < DateTime.Now)
+            {
+                var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_" + tokenUserId);
+                if (refreshToken.ExpiredAt < DateTime.Now)
+                {
+                    var user = await _context.Uses.SingleOrDefaultAsync(u => u.Id.ToString() == tokenUserId);
+                    string newAccessToken = GenerateAccessToken(user);
+                    return new CheckTokenResult
+                    {
+                        Status = "201",
+                        Error = "Create new acccessToken success",
+                        AccessToken = newAccessToken
+
+                    };
+                    //_cacheService.SetData("accessToken_" + tokenUserId, newAccessToken);
+                }
+                else
+                {
+                    _cacheService.RemoveData("accessToken_"+tokenUserId);
+                    _cacheService.RemoveData("refreshToken_"+tokenUserId);
+                    return new CheckTokenResult
+                    {
+                        Status = "401",
+                        Error = "Token has expried"
+                    };
+
+                }
+
+            }
+
+            return new CheckTokenResult
+            {
+                Status = "200",
+                Error = "Access Token has not expired"
+            };
+
+        }
+
+
+
     }
 }
