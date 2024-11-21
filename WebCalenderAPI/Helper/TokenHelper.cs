@@ -20,10 +20,11 @@ namespace WebCalenderAPI.Helper
         private readonly AppSettings _appSettings;
         private readonly ICacheService _cacheService;
 
-        public TokenHelper(MyDbContext context, IOptionsMonitor<AppSettings> optionsMonitor)
+        public TokenHelper(MyDbContext context, IOptionsMonitor<AppSettings> optionsMonitor, ICacheService cacheService)
         {
             _context = context;
             _appSettings = optionsMonitor.CurrentValue;
+            _cacheService = cacheService;
         }
         private async Task<TokenModel> GenerateToken(User user)
         {
@@ -49,7 +50,7 @@ namespace WebCalenderAPI.Helper
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
 
             };
@@ -69,7 +70,7 @@ namespace WebCalenderAPI.Helper
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddMinutes(30)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(60)
 
             };
 
@@ -121,7 +122,7 @@ namespace WebCalenderAPI.Helper
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
 
             };
@@ -357,10 +358,14 @@ namespace WebCalenderAPI.Helper
             }
             var utcExpireDate = long.Parse(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
             var expiredDate = convertUnixTimeToDateTime(utcExpireDate);
+            var checkExpired = expiredDate.ToLocalTime();
+            Console.WriteLine(checkExpired);
             if (expiredDate.ToLocalTime() < DateTime.Now)
             {
                 var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_" + tokenUserId);
-                if (refreshToken.ExpiredAt < DateTime.Now)
+                var checkRefreshToken = refreshToken.ExpiredAt;
+                Console.WriteLine(checkRefreshToken);
+                if (refreshToken.ExpiredAt > DateTime.Now)
                 {
                     var user = await _context.Uses.SingleOrDefaultAsync(u => u.Id.ToString() == tokenUserId);
                     string newAccessToken = GenerateAccessToken(user);
@@ -386,12 +391,16 @@ namespace WebCalenderAPI.Helper
                 }
 
             }
-
-            return new CheckTokenResult
+            else
             {
-                Status = "200",
-                Error = "Access Token has not expired"
-            };
+                return new CheckTokenResult
+                {
+                    Status = "200",
+                    Error = "Access Token has not expired"
+                };
+
+            }
+
 
         }
 

@@ -17,7 +17,6 @@ namespace WebCalenderAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;

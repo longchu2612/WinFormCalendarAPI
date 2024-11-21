@@ -88,15 +88,16 @@ namespace WebCalenderAPI.Controllers
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(60),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
                 
             };
 
             var token = jwtTokenHandler.CreateToken(tokenDescription);
             var accessToken = jwtTokenHandler.WriteToken(token);
-
+            Console.WriteLine(accessToken);
             _cacheService.SetData("accessToken_"+ user.Id,accessToken);
+            
 
             var refreshToken = GenerateFresherToken();
 
@@ -111,10 +112,14 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddHours(1)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(60)
 
             };
-            _cacheService.SetData("refreshToken_"+ user.Id, refreshToken);
+            _cacheService.SetData("refreshToken_"+ user.Id, refreshTokenEntity);
+
+            var refreshToken_2 = _cacheService.GetData<RefresherToken>("refreshToken_" + user.Id);
+            var checkRefreshToken = refreshToken_2.ExpiredAt;
+            Console.WriteLine(checkRefreshToken);
             //try
             //{
             //    await _context.RefresherTokens.AddAsync(refreshTokenEntity);
@@ -161,7 +166,7 @@ namespace WebCalenderAPI.Controllers
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(30),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
 
             };
@@ -169,6 +174,10 @@ namespace WebCalenderAPI.Controllers
             var accessToken = jwtTokenHandler.WriteToken(token);
             return accessToken;
         }
+
+
+
+
 
         [HttpPost("RenewToken")]
         public async Task<IActionResult> RenewToken([FromBody]TokenModel model)
