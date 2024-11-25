@@ -63,11 +63,13 @@ namespace WebCalenderAPI.Services
             var schedule = _context.Schedules.SingleOrDefault(sche => sche.Id == id);
             if(schedule != null)
             {
+                
                 var scheduleUsers = _context.schedule_Users.SingleOrDefault(su => su.ScheduleId == id && su.UserId == userId);
                 _context.schedule_Users.Remove(scheduleUsers);
                 _context.Schedules.Remove(schedule);
                 Console.WriteLine(schedule);
                 _context.SaveChanges();
+            
             }
             
         }

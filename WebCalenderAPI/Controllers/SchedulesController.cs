@@ -160,6 +160,7 @@ namespace WebCalenderAPI.Controllers
             {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                var response = new SchedulesResponseDTO();
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
@@ -168,9 +169,10 @@ namespace WebCalenderAPI.Controllers
                 {
                     string accessToken = result.AccessToken;
                     _cacheService.SetData("accessToken_" + userId, accessToken);
+                    response.accessToken = accessToken;
                 }
-
-                return Ok(_scheduleRepository.getByDateWithReasonWithUserId(userId, dateTime));
+                response.scheduleList = _scheduleRepository.getByDateWithReasonWithUserId(userId,dateTime);
+                return Ok(response);
             }
             catch
             {
@@ -266,6 +268,7 @@ namespace WebCalenderAPI.Controllers
             {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                var response = new SchedulesResponseDTO();
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
@@ -273,9 +276,11 @@ namespace WebCalenderAPI.Controllers
                 else if (result.Status == "201")
                 {
                     string accessToken = result.AccessToken;
+                    response.accessToken = accessToken;
                     _cacheService.SetData("accessToken_" + userId, accessToken);
                 }
-                return Ok(_scheduleRepository.getAllScheduleWithoutReason(userId, dateTime));
+                response.scheduleList = _scheduleRepository.getAllScheduleWithoutReason(userId, dateTime);
+                return Ok(response);
             }
             catch
             {
@@ -298,6 +303,7 @@ namespace WebCalenderAPI.Controllers
                 }
 
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                var response = new SchedulesResponseDTO();
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
@@ -306,9 +312,10 @@ namespace WebCalenderAPI.Controllers
                 {
                     string accessToken = result.AccessToken;
                     _cacheService.SetData("accessToken_" + userId, accessToken);
+                    response.accessToken = accessToken;
                 }
                 _scheduleRepository.Update(scheduleVM);
-                return Ok();
+                return Ok(response);
             }
             catch
             {
@@ -323,6 +330,7 @@ namespace WebCalenderAPI.Controllers
             {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
+                var response = new SchedulesResponseDTO();
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
@@ -331,9 +339,10 @@ namespace WebCalenderAPI.Controllers
                 {
                     string accessToken = result.AccessToken;
                     _cacheService.SetData("accessToken_" + userId, accessToken);
+                    response.accessToken = accessToken; 
                 }
                 _scheduleRepository.Delete(id,userId);
-                return Ok();
+                return Ok(response);
             }
             catch
             {
@@ -363,6 +372,7 @@ namespace WebCalenderAPI.Controllers
             {
                 var authorizationHeader = HttpContext.Request.Headers["Authorization"];
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, meata.user_id);
+                var response = new SchedulesResponseDTO();
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
@@ -370,10 +380,15 @@ namespace WebCalenderAPI.Controllers
                 else if (result.Status == "201")
                 {
                     string accessToken = result.AccessToken;
-                    _cacheService.SetData("accessToken_" + meata.user_id, accessToken);
-                }
 
-                return Ok(_scheduleRepository.AddScheduleWithDate(meata));
+                    _cacheService.SetData("accessToken_" + meata.user_id, accessToken);
+
+                    response.accessToken = accessToken;
+                }
+                List<ScheduleVM> listSchedules = new List<ScheduleVM>();
+                listSchedules.Add(_scheduleRepository.AddScheduleWithDate(meata));
+                response.scheduleList = listSchedules;
+                return Ok(response);
             }
             catch
             {

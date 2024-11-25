@@ -50,7 +50,7 @@ namespace WebCalenderAPI.Helper
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(10),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(80),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
 
             };
@@ -70,7 +70,7 @@ namespace WebCalenderAPI.Helper
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(60)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(300)
 
             };
 
@@ -122,7 +122,7 @@ namespace WebCalenderAPI.Helper
 
                     //roles
                 }),
-                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(10),
+                Expires = DateTime.UtcNow.ToLocalTime().AddSeconds(80),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeybytes), SecurityAlgorithms.HmacSha256Signature)
 
             };
