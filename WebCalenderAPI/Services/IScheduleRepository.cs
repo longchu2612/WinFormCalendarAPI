@@ -27,5 +27,8 @@ namespace WebCalenderAPI.Services
         List<ScheduleVM> getAllScheduleByUser(int userId);
 
         int? getUserIdFromSchedule(int scheduleId);
+
+        List<String> getAllNotifycation();
+
     }
 }

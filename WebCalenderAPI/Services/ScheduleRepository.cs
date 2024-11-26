@@ -90,6 +90,25 @@ namespace WebCalenderAPI.Services
             
         }
 
+        //public List<string> getAllNotifycation(int userId,DateTime dateTime)
+        //{
+        //    var schedules = _context.Schedules.Join(_context.schedule_Users,
+        //        sche => sche.Id,
+        //        scheduleUser => scheduleUser.ScheduleId,
+        //        (sche, scheduleUser) => new { sche, scheduleUser }
+        //        ).Where(x => x.scheduleUser.UserId == userId)
+        //        .Select(x => new
+        //        {
+        //            Id = x.sche.Id,
+        //            Date = x.sche.date,
+        //            FromX = x.sche.FromX,
+        //            FromY = x.sche.FromY,
+        //            ToX = x.sche.ToX,
+        //            ToY = x.sche.ToY,
+        //            Reason = x.sche.Reason
+        //        }).ToList();
+        //}
+
         public List<ScheduleVM> getAllScheduleByUser(int userId)
         {
             var schedules = _context.Schedules.Join(_context.schedule_Users,

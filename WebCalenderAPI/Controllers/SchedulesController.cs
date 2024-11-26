@@ -25,6 +25,7 @@ namespace WebCalenderAPI.Controllers
         private readonly AppSettings _appSettings;
         private readonly MyDbContext _context;
 
+
         public SchedulesController(IScheduleRepository scheduleRepository, IOptionsMonitor<AppSettings> optionsMonitor, ICacheService cacheService, TokenHelper tokenHelper, MyDbContext context)
         {
             _scheduleRepository = scheduleRepository;
@@ -119,7 +120,6 @@ namespace WebCalenderAPI.Controllers
         {
             try
             {
-                
                 return Ok(_scheduleRepository.GetByDate(dateTime));
             }
             catch
@@ -303,7 +303,7 @@ namespace WebCalenderAPI.Controllers
                 }
 
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
-                var response = new SchedulesResponseDTO();
+                var response = new SchedulesResponseDTO();"schedules_" + userId
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
