@@ -7,5 +7,7 @@
         public string Error { get; set; }
 
         public string AccessToken { get; set; }
+
+        public string ErrorCode { get; set; }
     }
 }

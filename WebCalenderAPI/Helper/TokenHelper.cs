@@ -70,7 +70,7 @@ namespace WebCalenderAPI.Helper
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(300)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(120)
 
             };
 
@@ -323,6 +323,12 @@ namespace WebCalenderAPI.Helper
 
         }
 
+        //public async Task<Boolean> checkTokenExpired(string accessToken)
+        //{
+        //    var claimsPrincipal = ValidateAccessToken(accessToken);
+            
+        //}
+
         public async Task<CheckTokenResult> CheckValidateToken(StringValues authorizationHeader, int? userId)
         {
             if (authorizationHeader.Count == 0 || !authorizationHeader[0].StartsWith("Bearer "))
@@ -382,10 +388,12 @@ namespace WebCalenderAPI.Helper
                 {
                     _cacheService.RemoveData("accessToken_"+tokenUserId);
                     _cacheService.RemoveData("refreshToken_"+tokenUserId);
+                    _cacheService.RemoveData("userId");
                     return new CheckTokenResult
                     {
                         Status = "401",
-                        Error = "Token has expried"
+                        Error = "Token has expried",
+                        ErrorCode = "ExpiredToken"
                     };
 
                 }
@@ -401,10 +409,9 @@ namespace WebCalenderAPI.Helper
 
             }
 
-
         }
 
-
+        
 
     }
 }

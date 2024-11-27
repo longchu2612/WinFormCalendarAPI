@@ -254,6 +254,22 @@
   },
   {
     "ContainingType": "WebCalenderAPI.Controllers.SchedulesController",
+    "Method": "GetAllNotify",
+    "RelativePath": "api/Schedules/getAllNotify",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "currentTime",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebCalenderAPI.Controllers.SchedulesController",
     "Method": "GetScheduleByUserId",
     "RelativePath": "api/Schedules/getSchedule/{userId}",
     "HttpMethod": "GET",

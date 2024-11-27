@@ -96,6 +96,7 @@ namespace WebCalenderAPI.Controllers
             var token = jwtTokenHandler.CreateToken(tokenDescription);
             var accessToken = jwtTokenHandler.WriteToken(token);
             Console.WriteLine(accessToken);
+            _cacheService.SetData("userId", user.Id);
             _cacheService.SetData("accessToken_"+ user.Id,accessToken);
             
 
@@ -112,7 +113,7 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(300)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(120)
 
             };
             //_cacheService.SetData("userId",user.Id);

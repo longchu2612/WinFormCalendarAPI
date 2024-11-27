@@ -90,6 +90,58 @@ namespace WebCalenderAPI.Services
             
         }
 
+        public List<ScheduleVM> getAllNotifycation(int userId, DateTime dateTime)
+        {
+
+            var schedules = _context.Schedules.Join(_context.schedule_Users,
+               sche => sche.Id,
+               scheduleUser => scheduleUser.ScheduleId,
+               (sche, scheduleUser) => new { sche, scheduleUser }
+               ).Where(x => x.scheduleUser.UserId == userId && x.sche.Reason != null && x.sche.date == dateTime)
+               .Select(x => new
+               {
+                   Id = x.sche.Id,
+                   Date = x.sche.date,
+                   FromX = x.sche.FromX,
+                   FromY = x.sche.FromY,
+                   ToX = x.sche.ToX,
+                   ToY = x.sche.ToY,
+                   Reason = x.sche.Reason
+               }).ToList();
+
+            Console.WriteLine(schedules);
+
+            List<ScheduleVM> scheduleVMs = new List<ScheduleVM>();
+
+            foreach (var schedule in schedules)
+            {
+                DateTime scheduleStartTime = new DateTime(
+                  DateTime.Now.Year,
+                  DateTime.Now.Month,
+                  DateTime.Now.Day,
+                  schedule.FromX ?? 0,
+                  schedule.FromY ?? 0,
+                  0);
+                if (scheduleStartTime - DateTime.Now <= TimeSpan.FromMinutes(2) && scheduleStartTime > DateTime.Now)
+                {
+                    scheduleVMs.Add(new ScheduleVM
+                    {
+                        id = schedule.Id,
+                        date = schedule.Date,
+                        FromX = schedule.FromX,
+                        FromY = schedule.FromY,
+                        ToX = schedule.ToX,
+                        ToY = schedule.ToY,
+                        Reason = schedule.Reason
+                    });
+                }
+                
+            }
+
+            return scheduleVMs;
+
+        }
+
         //public List<string> getAllNotifycation(int userId,DateTime dateTime)
         //{
         //    var schedules = _context.Schedules.Join(_context.schedule_Users,

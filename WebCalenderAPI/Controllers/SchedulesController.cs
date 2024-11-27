@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -153,6 +154,31 @@ namespace WebCalenderAPI.Controllers
         
         }
 
+
+        [HttpGet("getAllNotify")]
+        public async Task<IActionResult> GetAllNotify([FromQuery]DateTime currentTime)
+        {
+            try
+            {
+                var userId = _cacheService.GetData<int>("userId");
+                var accessToken = _cacheService.GetData<String>("accessToken_" + userId);
+                var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_" + userId);
+               
+                if(userId != 0)
+                {
+                    if (refreshToken.ExpiredAt > DateTime.UtcNow) {
+
+                        return Ok(_scheduleRepository.getAllNotifycation(userId, currentTime));
+                    }
+                }
+                return NotFound();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         [HttpGet("getAllDateByUserId")]
         public async Task<IActionResult> GetByDateTimeByUserIdWithHavingReason([FromQuery]DateTime dateTime,[FromQuery] int userId)
         {
@@ -303,7 +329,7 @@ namespace WebCalenderAPI.Controllers
                 }
 
                 CheckTokenResult result = await _tokenHelper.CheckValidateToken(authorizationHeader, userId);
-                var response = new SchedulesResponseDTO();"schedules_" + userId
+                var response = new SchedulesResponseDTO();
                 if (result.Status == "401")
                 {
                     return Unauthorized(result.Error);
