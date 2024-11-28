@@ -113,7 +113,7 @@ namespace WebCalenderAPI.Controllers
                 IsUsed = true,
                 IsRevoked = false,
                 IssuedAt = DateTime.UtcNow.ToLocalTime(),
-                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(120)
+                ExpiredAt = DateTime.UtcNow.ToLocalTime().AddSeconds(360)
 
             };
             //_cacheService.SetData("userId",user.Id);

@@ -163,15 +163,14 @@ namespace WebCalenderAPI.Controllers
                 var userId = _cacheService.GetData<int>("userId");
                 var accessToken = _cacheService.GetData<String>("accessToken_" + userId);
                 var refreshToken = _cacheService.GetData<RefresherToken>("refreshToken_" + userId);
-               
-                if(userId != 0)
-                {
-                    if (refreshToken.ExpiredAt > DateTime.UtcNow) {
-
+                if (refreshToken != null && refreshToken.ExpiredAt > DateTime.UtcNow) {
+                    if(userId != 0)
+                    {
                         return Ok(_scheduleRepository.getAllNotifycation(userId, currentTime));
-                    }
+                    } 
                 }
-                return NotFound();
+                
+                return BadRequest();
             }
             catch
             {
